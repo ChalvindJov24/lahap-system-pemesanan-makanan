@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lahap — Login</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    >
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/public/assets/css/login-style.css">
+</head>
+<body>
+
+<div class="auth-layout">
+    <div class="auth-card">
+
+        <h1 class="auth-title">Selamat Datang Kembali</h1>
+        <p class="auth-subtitle">Masukkan email dan password untuk masuk ke akun Anda</p>
+
+        <form id="loginForm" novalidate>
+
+            <!-- Email -->
+            <div class="form-group">
+                <label for="email" class="auth-label">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  class="auth-form-control"
+                  placeholder="nama@contoh.com"
+                  required
+                >
+                <div class="invalid-feedback">
+                    Email wajib diisi dengan format yang valid.
+                </div>
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+                <label for="password" class="auth-label">Password</label>
+                <div class="password-wrapper">
+                    <input
+                      type="password"
+                      id="password"
+                      name="password"
+                      class="auth-form-control"
+                      placeholder="••••••••"
+                      minlength="6"
+                      required
+                    >
+                    <button
+                      type="button"
+                      class="password-toggle"
+                      id="togglePassword"
+                      aria-label="Toggle password visibility"
+                    >
+                        <svg class="icon-eye" viewBox="0 0 24 24">
+                            <path d="M12 5c-7.633 0-11 7-11 7s3.367 7 11 7 11-7 11-7-3.367-7-11-7zm0 12a5 5 0 110-10 5 5 0 010 10z"/>
+                            <circle cx="12" cy="12" r="2.5"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="invalid-feedback">
+                    Password minimal 6 karakter.
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="form-group">
+                <button type="submit" class="btn-auth-primary">
+                    Login
+                </button>
+            </div>
+
+            <!-- Link to Register -->
+            <div class="text-center">
+                <a href="/public/register.html" class="auth-link">
+                    Belum punya akun? Daftar di sini
+                </a>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<script>
+// Password visibility toggle
+const toggle = document.getElementById('togglePassword');
+const password = document.getElementById('password');
+
+toggle.addEventListener('click', () => {
+    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+    password.setAttribute('type', type);
+});
+
+// Form validation
+const form = document.getElementById('loginForm');
+
+form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    let isValid = true;
+
+    // Reset previous errors
+    const inputs = form.querySelectorAll('.auth-form-control');
+    inputs.forEach(input => {
+        input.classList.remove('is-invalid');
+    });
+
+    // Validate email
+    const email = form.email;
+    if (!email.value.trim()) {
+        email.classList.add('is-invalid');
+        isValid = false;
+    } else if (!email.checkValidity()) {
+        email.classList.add('is-invalid');
+        isValid = false;
+    }
+
+    // Validate password
+    const pw = form.password;
+    if (!pw.value) {
+        pw.classList.add('is-invalid');
+        isValid = false;
+    } else if (pw.value.length < 6) {
+        pw.classList.add('is-invalid');
+        isValid = false;
+    }
+
+    if (isValid) {
+        // Frontend-only: show success (backend akan ditambahkan)
+        alert('Login form valid! (Frontend prototype — backend akan ditambahkan di issue terpisah)');
+    }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,219 @@
+/* login-style.css — Design tokens & auth-specific styles
+ * Based on DESIGN.md design system for Lahap application
+ */
+
+:root {
+  /* ── Base Surface & Background ── */
+  --bg:           #ffffff;            /* Latar belakang utama */
+  --surface:      #ffffff;            /* Kontainer card */
+  --fg:           #111827;            /* Teks primer (kontras ≥ 9:1) */
+  --muted:        #6b7280;            /* Teks sekunder & border ikon */
+  --border:       #e5e7eb;            /* Garis pemisah */
+
+  /* ── Primary Accent (Merah Tajam) ── */
+  --accent:       #dc2626;            /* CTA primer, state aktif */
+  --accent-soft:  #fee2e2;            /* Focus ring / hover tint */
+  --accent-mid:   #fca5a5;            /* Hover state */
+
+  /* ── State Tokens ── */
+  --danger:       #dc2626;
+  --danger-soft:  #fee2e2;
+  --success:      #16a34a;
+  --success-soft: #dcfcea;
+
+  /* ── Typography ── */
+  --font:         'Poppins', system-ui, sans-serif;
+  --font-mono:    ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+
+  /* ── Spacing & Radius ── */
+  --radius:       10px;               /* Inputs, buttons */
+  --radius-lg:    14px;               /* Card */
+  --card-max-w:   420px;              /* Max width for auth card */
+}
+
+/* ── Layout ── */
+.auth-layout {
+  min-height: 100vh;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.auth-card {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: var(--card-max-w);
+  padding: 32px;
+}
+
+/* ── Typography ── */
+.auth-title {
+  font-family: var(--font);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--fg);
+  margin-bottom: 4px;
+}
+
+.auth-subtitle {
+  font-family: var(--font);
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+
+/* ── Form Controls ── */
+.auth-form-control {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font);
+  font-size: 14px;
+  transition: border-color 0.2s ease;
+}
+
+.auth-form-control:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.auth-form-control.is-invalid {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px var(--danger-soft);
+}
+
+.auth-label {
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--fg);
+  margin-bottom: 6px;
+  letter-spacing: 0.01em;
+}
+
+/* ── Password Toggle ── */
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: var(--muted);
+  line-height: 1;
+}
+
+.password-wrapper {
+  position: relative;
+}
+
+/* ── Buttons ── */
+.btn-auth-primary {
+  width: 100%;
+  background: var(--accent);
+  color: #ffffff;
+  border: 1px solid var(--accent);
+  padding: 10px 16px;
+  border-radius: var(--radius);
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.btn-auth-primary:hover {
+  background: var(--accent-mid);
+}
+
+/* ── Form Group ── */
+.form-group {
+  margin-bottom: 18px;
+}
+
+/* ── Validation Feedback ── */
+.invalid-feedback {
+  color: var(--danger);
+  font-family: var(--font);
+  font-size: 12px;
+  margin-top: 4px;
+  display: none;
+}
+
+.auth-form-control.is-invalid + .invalid-feedback,
+.auth-form-control.is-invalid ~ .invalid-feedback {
+  display: block;
+}
+
+/* ── Link ── */
+.auth-link {
+  color: var(--muted);
+  text-decoration: none;
+  font-family: var(--font);
+  font-size: 13px;
+}
+
+.auth-link:hover {
+  color: var(--accent);
+}
+
+/* ── Divider ── */
+.auth-divider {
+  text-align: center;
+  margin: 24px 0;
+  font-family: var(--font);
+  font-size: 12px;
+  color: var(--muted);
+  position: relative;
+}
+
+.auth-divider::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--border);
+}
+
+.auth-divider span {
+  background: var(--surface);
+  padding: 0 12px;
+  position: relative;
+}
+
+/* ── Icons (inline SVG) ── */
+.icon-eye {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .auth-card {
+    padding: 24px 20px;
+    border-radius: var(--radius-lg);
+  }
+
+  .auth-title {
+    font-size: 22px;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 960px) {
+  .auth-card {
+    padding: 28px;
+  }
+}
