@@ -19,3 +19,7 @@ Thumbs.db
 
 # Tests temp
 tests/tmp/
+
+# Temp MySQL data (dev only)
+.tmpdb/
+docs/.tmp_mysql.ini
