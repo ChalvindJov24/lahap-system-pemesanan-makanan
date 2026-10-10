@@ -1,0 +1,21 @@
+# PHP
+/vendor/
+*.log
+
+# Assets
+assets/upimg/*
+!assets/upimg/.gitkeep
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Tests temp
+tests/tmp/
