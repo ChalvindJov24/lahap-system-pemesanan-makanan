@@ -1,168 +1,144 @@
-# Issue: Setup Project Guide
-# Sistem Pemesanan Makanan "Lahap"
+# Issue: Implement Login & Register Pages (Frontend Only)
 
-## Tujuan
-Panduan langkah-demi-langkah untuk menginstal seluruh dependensi dan mengonfigurasi environment agar project "Lahap" dapat dijalankan dan dikembangkan oleh agent berikutnya.
+## Konteks & Tujuan
 
----
+Membangun halaman **login** dan **register** (frontend only — HTML/CSS/JS). Backend (auth logic, session handling, DB interaction) akan diimplementasikan di issue terpisah.
 
-## 1. Teknologi yang Diperlukan
+Halaman ini harus mengikuti design system dari `DESIGN.md`:
 
-| Komponen | Versi | Keterangan |
-|----------|-------|------------|
-| **PHP** | 8.x | CLI + extension: PDO, mbstring, gd, fileinfo, json |
-| **MySQL** | 8.0+ | Database server |
-| **Apache** | 2.4+ | Web server (bisa via XAMPP) |
-| **Bootstrap** | 5.x | Frontend framework (via CDN) |
-| **Composer** | optional | Hanya jika diperlukan dependency tambahan |
+- **Warna aksen:** `--accent: #dc2626` (maks 2 titik per viewport)
+- **Font:** Poppins (primary), font-mono (angka/kode)
+- **Style:** clean, high-contrast, zero gradien, zero blur
+- **Responsive:** desktop >960px, tablet 641–960px, mobile ≤640px
 
 ---
 
-## 2. Prasyaaat Sistem Perangkat Lunak
+## Scope
 
-Sebelum memulai, pastikan komponen berikut terpasang:
+### Dikerjakan (Frontend)
+- ✅ HTML5 semantic, CSS via Bootstrap 5 + custom token CSS
+- ✅ Register page — form: nama, email, HP, password, konfirmasi
+- ✅ Login page — form: email, password
+- ✅ Form validation visual (client-side)
+- ✅ Responsive layout (centered card)
+- ✅ Password toggle visibility (eye icon SVG)
 
-```bash
-php -v        # Harus >= PHP 8.0
-php -m        # Cek extension: pdo_mysql, mbstring, gd, fileinfo, json
-mysql --version  # Harus >= MySQL 8.0
-```
-
-Pastikan port berikut tersedia (tidak sedang digunakan):
-- `:80` (Apache/web server)
-- `:3306` (MySQL)
-
----
-
-## 3. Instalasi Perangkat Lunak
-
-### Step 1: Install PHP 8.x
-- **Windows (XAMPP):** Download dari https://www.apachefriends.org, install XAMPP yang termasuk PHP
-- **Alternatif:** Install PHP standalone dari https://www.php.net/downloads.php
-- **Verifikasi:** `php -v`
-- **Cek extension penting:**
-  ```bash
-  php -m | findstr pdo_mysql
-  php -m | findstr mbstring
-  php -m | findstr gd
-  php -m | findstr fileinfo
-  php -m | findstr json
-  ```
-
-### Step 2: Install MySQL 8.0
-- **Via XAMPP:** Biasanya termasuk MySQL/MariaDB
-- **Standalone:** Download dari https://dev.mysql.com/downloads/installer/
-- **Verifikasi:** `mysql --version`
-
-### Step 3: Install Apache / Web Server
-- **Via XAMPP:** Otomatis terinstall
-- **Verifikasi:** Buka `http://localhost/` di browser
-
-### Step 4: Konfigurasi Virtual Host
-- Atur `DocumentRoot` ke folder project agar routing berfungsi dengan sempurna
-- Contoh konfigurasi Apache virtual host:
-  ```apache
-  <VirtualHost *:80>
-      DocumentRoot "D:/xampp/htdocs/lahap/public"
-      ServerName lahap.local
-  </VirtualHost>
-  ```
-- Tambahkan `127.0.0.1 lahap.local` ke file `hosts`
-
-### Step 5: Import Database Schema
-```bash
-mysql -u root -p lahap < docs/database.sql
-```
-- Gunakan credentials MySQL yang sesuai
-- Database `lahap` akan dibuat otomatis oleh script
+### TIDAK dikerjakan (Backend — issue terpisah)
+- ❌ Auth logic, DB interaction, session management
+- ❌ Form submission handler / PHP backend
+- ❌ User registration DB insertion
 
 ---
 
-## 4. Setup Project
+## Step by Step
 
-### Step 1: Letakkan Project
-- Pastikan project berada di folder yang dapat diakses web server
-- Contoh: `D:/xampp/htdocs/lahap/` atau `/var/www/html/lahap/`
+### Step 1: Buat CSS design token
+- **File:** `public/assets/css/login-style.css`
+- Copy token dari `DESIGN.md` (`:root` variables)
+- Custom class: `.auth-card`, `.auth-form-control`, `.auth-cta`, dll
 
-### Step 2: Konfigurasi Database
-- Edit file `config/database.php`
-- Isi credential MySQL sesuai environment:
-  ```php
-  $host = 'localhost';
-  $db   = 'lahap';
-  $user = 'root';
-  $pass = '';  // ubah sesuai password MySQL Anda
-  ```
+### Step 2: Buat `register.html`
+- Layout: centered card (max-width 400px)
+- Background: `--bg` (#ffffff)
+- Card: `--surface`, radius 10px, shadow
+- Form fields:
+  - Nama Lengkap (required)
+  - Email (type=email, required)
+  - No. HP (type=tel, pattern digit)
+  - Password (type=password, min 6 karakter)
+  - Konfirmasi Password (must match)
+- CTA: tombol "Daftar" — primary (`--accent`, text putih)
+- Link kecil: "Sudah punya akun? Login" → `/login.html`
 
-### Step 3: Buat Folder yang Diperlukan
-Pastikan folder berikut ada dan bisa ditulis oleh web server:
-```
-assets/upimg/     -- tempat upload gambar menu
-tests/            -- tempat file unit/integration test
-```
-Jika belum ada, buat secara manual:
-```bash
-mkdir -p assets/upimg
-mkdir -p tests
-```
+### Step 3: Buat `login.html`
+- Layout: centered card (max-width 400px)
+- Form fields:
+  - Email (type=email, required)
+  - Password (type=password, required)
+- CTA: tombol "Login" — primary (`--accent`, text putih)
+- Link kecil: "Belum punya akun? Daftar" → `/register.html`
 
-### Step 4: Verifikasi Environment
-- Buka browser, akses: `http://lahap.local/login`
-- Halaman login harus muncul (bisa error koneksi DB, itu normal sebelum import schema)
-- Jalankan: `php tests/run.php` — harus output semua PASS (setelah test terbuat)
+### Step 4: Validasi form
+- HTML5 validation (`required`, `type`, `pattern`)
+- CSS feedback: `.is-invalid`, `.invalid-feedback`
+- Password strength meter (opsional, client-side)
 
-### Step 5: Seeding Data (Opsional)
-- Import data contoh (kategori menu, admin user) untuk testing awal
-- File seed akan tersedia di `docs/seed.sql` (optional, hanya untuk dev)
-
----
-
-## 5. Batasan Agent (Agent Constraints)
-
-Agent yang mengerjakan setup ini **hanya diperbolehkan** melakukan:
-
-- ✅ Instal PHP, MySQL, Apache/XAMPP
-- ✅ Konfigurasi virtual host / document root
-- ✅ Import database schema dari `docs/database.sql`
-- ✅ Edit `config/database.php` (hanya credential DB)
-- ✅ Membuat folder `assets/upimg/` dan `tests/`
-- ✅ Verifikasi via `php -l` dan `php tests/run.php`
-
-Agent **dilarang**:
-
-- ❌ Mengubah struktur folder final (lihat `docs/architecture.md`)
-- ❌ Menambahkan dependency eksternal (kecuali Bootstrap CSS via CDN)
-- ❌ Mengubah tech stack (wajib pakai PHP native, bukan framework)
-- ❌ Membuat file code PHP selain yang tercantum di architecture.md
-- ❌ Menghardcode credential di file PHP selain `config/database.php`
+### Step 5: Password toggle
+- Eye icon SVG (inline) — toggle visibility password field
+- Click → switch input type password/text
 
 ---
 
-## 6. Definition of Done (Phase: Setup Project)
+## Structure Folder (Temporary)
 
-Setup project dianggap **selesai / Done** apabila **semua** kondisi berikut terpenuhi:
+```
+lahap/
+├── docs/
+│   └── issue.md          ← FILE INI
+├── public/
+│   ├── assets/
+│   │   └── css/
+│   │       ├── login-style.css   ← custom tokens & class
+│   │   └── (bootstrap via CDN)
+│   ├── login.html         ← prototype (nanti login.php)
+│   └── register.html      ← prototype (nanti register.php)
+```
 
-- [ ] PHP 8.x terpasang & dapat diakses via CLI (`php -v`)
-- [ ] Cek extension penting ada: pdo_mysql, mbstring, gd, fileinfo, json
-- [ ] MySQL 8.0+ berjalan dan dapat di-connect via CLI (`mysql -u root -p`)
-- [ ] Web server dapat serve halaman (`http://localhost/` merespon)
-- [ ] Database schema berhasil di-import (`USE lahap; SHOW TABLES;` menampilkan 6 tables)
-- [ ] `config/database.php` berisi credential yang valid
-- [ ] Folder `assets/upimg/` dan `tests/` sudah dibuat & writable
-- [ ] `php -l` lint bersih tanpa error/warning/notices untuk semua file PHP
-- [ ] `php tests/run.php` — hasil semua test: **PASS** (jika sudah tersedia)
-- [ ] Halaman login dapat diakses via browser (`http://lahap.local/login`)
-- [ ] Error log dibersihkan (tidak ada fatal error yang menghalangi akses)
+> **Catatan:** Setelah backend siap, file `.html` akan diganti menjadi `.php` dengan form action menuju backend auth.
 
 ---
 
-## Notes / Troubleshooting
+## Design Principles (dari `DESIGN.md`)
 
-1. **MySQL root password** — Jika lupa password, reset via safe mode atau minta admin sistem
-2. **Permission denied** — Pastikan folder `assets/upimg/` & `tests/` writable oleh web server
-3. **Port conflict** — Cek apakah port 80/3306 sudah dipakai aplikasi lain
-4. **PHP extensions** — Jika `php -m` tidak dapat menemukan extension, aktifkan di `php.ini`
+| Prinsip | Implementation |
+|--------|-----------------|
+| Clean & Utility First | Putih bersih, kontras ≥ 4.9:1, zero gradien |
+| Single Accent (#dc2626) | Maks 2 aksen per viewport (CTA + active state) |
+| Typography | Poppins font, `font-mono tabular` untuk angka |
+| Radius | 10px (inputs/buttons), 14px (card) |
+| Input Focus | `box-shadow: 0 0 0 3px var(--accent-soft)` |
+| Validation Error | Border `--danger`, glow ring `--danger-soft` |
 
-```
-Semua langkah di atas harus selesai sebelum melangkah ke fase implementasi kode sumber.
-```
+### Anti-AI Slop Rules
+- ❌ No gradien (ungu, biru, pelangi)
+- ❌ No emoji sebagai icon — pakai inline SVG stroke 2px
+- ❌ Max 1 primary CTA per viewport
+- ❌ No font Inter/Roboto — pakai Poppins konsisten
+- ❌ No ilustrasi kartun / hand-drawn SVG
+- ❌ No hover scale animasi berlebihan
+
+---
+
+## Batasan Agent (Agent Constraints)
+
+- ✅ Hanya frontend (HTML/CSS/JS)
+- ✅ Bootstrap 5 via CDN
+- ✅ Ikuti `DESIGN.md` token & anti-slopp rules
+- ❌ Tidak boleh menulis backend logic
+- ❌ Tidak boleh akses DB / session
+- ❌ No external icon libraries (fontawesome dll)
+- ❌ No hardcoded hex values — pakai CSS custom properties
+
+---
+
+## Definition of Done
+
+- [ ] `login.html` ada di `public/`
+- [ ] `register.html` ada di `public/`
+- [ ] `login-style.css` ada di `public/assets/css/`
+- [ ] Kedua halaman render di Chrome & Firefox (desktop + mobile)
+- [ ] Form validation visual: error border `--danger`, focus ring `--accent-soft`
+- [ ] Password toggle visibility (eye icon SVG)
+- [ ] Link navigasi antar halaman (Login ↔ Register)
+- [ ] Menggunakan CSS token dari `DESIGN.md` (warna, font, radius)
+- [ ] Tidak ada gradien, emoji, atau efek hover berlebihan
+- [ ] HTML5 semantic (`<form>`, `<label>`, `<input>`, `<section>`)
+- [ ] Commit & push ke GitHub
+- [ ] Issue ini di-close setelah PR merge
+
+---
+
+## Referensi
+- Design system: `docs/DESIGN.md`
+- Folder structure: `docs/architecture.md`
+- Agent constraints & DoD: `docs/AGENTS.md`
