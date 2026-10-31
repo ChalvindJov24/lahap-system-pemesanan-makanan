@@ -2,7 +2,7 @@
 // config/database.php — PDO connection untuk MySQL
 
 $host = '127.0.0.1';
-$port = 3307;
+$port = 8111; // MariaDB 10.4 di phpMyAdmin/XAMPP
 $db   = 'lahap';
 $user = 'root';
 $pass = '';

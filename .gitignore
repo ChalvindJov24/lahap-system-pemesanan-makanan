@@ -23,3 +23,6 @@ tests/tmp/
 # Temp MySQL data (dev only)
 .tmpdb/
 docs/.tmp_mysql.ini
+.tmpdb_lahap_schema.sql
+.tmp_conn.php
+.tmp_*.sql
